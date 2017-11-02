@@ -1,0 +1,21 @@
+version: '3.2'
+services:
+  db:
+    image: cassandra
+    expose:
+      - 9042
+    volumes:
+      - cassandradata:/var/lib/cassandra
+  node:
+    image: node
+    volumes:
+      - .:/app
+    depends_on:
+      - "db"
+    command: ["./wait-for-it.sh", "db:9042", "--", "npm", "run", "nodemon"]
+    working_dir: /app
+    ports:
+      - 3000:3000
+
+volumes:
+  cassandradata:
