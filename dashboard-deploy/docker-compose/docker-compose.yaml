@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  vue:
+    build:
+      context: epi-dash
+      dockerfile: Dockerfile
+    command: npm start
+    ports:
+      - 8080:8080
+    links:
+      - elixir
+    volumes:
+      - ./epi-dash:/app
+  fuseki:
+    image: quorauk/jena-fuseki:1.6.0
+    volumes:
+      - ./data:/fuseki/data
+    ports:
+      - 3030:3030
+    command: ./fuseki-server --update --loc=data /ds
+  elixir:
+    build:
+      context: project-management-dashboard
+      dockerfile: Dockerfile
+    command: mix phoenix.server
+    ports:
+      - 4000:4000
+    links:
+      - fuseki
+    volumes:
+      - ./project-management-dashboard:/app:Z
+    environment:
+      MIX_ENV: dev

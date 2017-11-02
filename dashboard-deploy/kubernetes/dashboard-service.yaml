@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dashboard-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: dashboard
+  ports:
+    - name: frontend
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: backend
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
+

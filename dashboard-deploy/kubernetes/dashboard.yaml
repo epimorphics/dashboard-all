@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dashboard
+  labels:
+    app: dashboard
+spec:
+  containers:
+    - name: vue
+      image: quorauk/dashboard-vue
+      ports:
+        - containerPort: 8080
+    - name: elixir
+      image: quorauk/dashboard-elixir
+      env:
+        - name: GIT_API
+          valueFrom:
+            secretKeyRef:
+              name: elixir-secret
+              key: GIT_API
+        - name: CB_USER
+          valueFrom:
+            secretKeyRef:
+              name: elixir-secret
+              key: CB_USER
+        - name: CB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: elixir-secret
+              key: CB_PASS
+        - name: JENKINS_USER
+          valueFrom:
+            secretKeyRef:
+              name: elixir-secret
+              key: JENKINS_USER
+        - name: JENKINS_PASS
+          valueFrom:
+            secretKeyRef:
+              name: elixir-secret
+              key: JENKINS_PASS
+        - name: TRELLO_KEY
+          valueFrom:
+            secretKeyRef:
+              name: elixir-secret
+              key: TRELLO_KEY
+        - name: TRELLO_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: elixir-secret
+              key: TRELLO_TOKEN
+      ports:
+        - containerPort: 4000
+    - name: fuseki
+      image: quorauk/dashboard-db
+      ports:
+        - containerPort: 3030
