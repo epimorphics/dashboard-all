@@ -1,0 +1,9 @@
+[submodule "epi-dash"]
+	path = epi-dash
+	url = https://github.com/epimorphics/epi-dash
+[submodule "project-management-dashboard"]
+	path = project-management-dashboard
+	url = https://github.com/epimorphics/project-management-dashboard
+[submodule "dashboard-deploy"]
+	path = dashboard-deploy
+	url = ./dashboard-deploy/
