@@ -19,7 +19,8 @@ hostPromise.then((hosts) => {
 hostPromise.then((hosts) => {
   hosts.map((host) => {
     var rule = new schedule.RecurrenceRule();
-    rule.minute = new schedule.Range(0, 59, 5);
+    console.log(parseInt(process.env.PERIOD))
+    rule.minute = new schedule.Range(0, 59, parseInt(process.env.PERIOD));
     schedule.scheduleJob(rule, function() {
       console.log("calculating");
       var time = moment()
