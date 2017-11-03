@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  twitter:
+    image: test
+    #command: ls /run/secrets
+    command: npm run nodemon
+    volumes: 
+      - /c/Users/maxpr/Documents/dashboard-all/twitter-consume:/app
+    working_dir: /app
+    ports:
+      - 3000:3000
+    secrets:
+     - consumer_secret
+     - consumer_key
+     - access_token_key
+     - access_token_secret
+secrets:
+  consumer_secret:
+    file: /c/Users/maxpr/Documents/dashboard-all/twitter-consume/secrets/twitter_consumer_secret_v1
+  consumer_key:
+    file: /c/Users/maxpr/Documents/dashboard-all/twitter-consume/secrets/twitter_consumer_key_v1
+  access_token_key:
+    file: /c/Users/maxpr/Documents/dashboard-all/twitter-consume/secrets/twitter_access_token_key
+  access_token_secret:
+    file: /c/Users/maxpr/Documents/dashboard-all/twitter-consume/secrets/twitter_access_token_secret
