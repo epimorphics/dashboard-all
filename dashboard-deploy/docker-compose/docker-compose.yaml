@@ -2,36 +2,47 @@ version: '3.1'
 
 services:
   vue:
-    build:
-      context: epi-dash
-      dockerfile: Dockerfile
-    command: npm start
+    #build:
+    #  context: epi-dash
+    #  dockerfile: Dockerfile.static
+    image: quorauk/dashboardvue:3
     ports:
-      - 8080:8080
+      - 8080:80
+    depends_on:
+      - elixir
+    environment:
+      - NGINX_HOST=http://elixir:4000
     links:
       - elixir
-    volumes:
-      - ./epi-dash:/app
   fuseki:
     image: quorauk/jena-fuseki:1.6.0
     volumes:
       - ./data:/fuseki/data
+    expose:
+      - 3030
     ports:
       - 3030:3030
     command: ./fuseki-server --update --loc=data /ds
   elixir:
-    build:
-      context: project-management-dashboard
-      dockerfile: Dockerfile
-    command: mix phoenix.server
+    #build:
+    #  context: project-management-dashboard
+    #  dockerfile: Dockerfile.prod
+    #command: mix phoenix.server
+    image: quorauk/dashboardelixir:8
     ports:
       - 4000:4000
     links:
       - fuseki
-    volumes:
-      - ./project-management-dashboard:/app:Z
     environment:
-      MIX_ENV: dev
+      - GITHUB_API_KEY
+      - CB_USER
+      - CB_PASS
+      - JENKINS_USER
+      - JENKINS_PASS
+      - TRELLO_KEY
+      - TRELLO_TOKEN
+    #volumes:
+    #  - ./project-management-dashboard/config/prod.secret.exs:/app/config/prod.secret.exs:Z
   db:
     image: cassandra
     expose:
